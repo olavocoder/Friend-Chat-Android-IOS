@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "dce4383d-52a7-45d1-8b8a-56515c0a3108"
+      }
+    },
+    "android": {
+      "package": "com.olavioch.wrapperproject"
+    }
+  }
+}
