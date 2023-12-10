@@ -66,3 +66,4 @@ web-build/
 # others
 ./package-lock.json
 .env
+senhas.md
