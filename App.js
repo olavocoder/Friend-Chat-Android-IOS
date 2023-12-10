@@ -9,12 +9,13 @@ import LoginApi from "./services/LoginApi";
 import Buy from "./components/Buy";
 import Perfil from "./components/Perfil";
 import { StripeProvider } from "@stripe/stripe-react-native";
+import {GOOGLE_API_KEY} from '@env'
 
 export default function App() {
   const Stack = createStackNavigator()
 
   return(
-    <StripeProvider publishableKey="pk_test_51O1jJCDlIepAe2Mgd9b9vHJqOs3WTCyxWo7kbtW8B5U4wldBh75qHybgyotuzhqc8cRxkSn5K4wOBISJeFpsPSeR00CXc7B89Q">
+    <StripeProvider publishableKey={GOOGLE_API_KEY}>
       <ApolloProvider client={client}>
         <NavigationContainer>
           <Stack.Navigator>

@@ -4,10 +4,10 @@ import MapViewDirections from 'react-native-maps-directions';
 import { useEffect, useState } from "react";
 import style from "./style";
 import * as Location from 'expo-location'
+import {GOOGLE_MAPS_API_KEY} from '@env'
 
 export default function GoogleMap({navigation}) {
-  const GOOGLE_MAPS_API_KEY = 'AIzaSyDEB-p0PT2WU5C1egwCZaoEA0TqtQJh_C8';
-  const [origin, setOrigin] = useState(null)
+  const [origin, setOrigin] = userState(null)
   const [destination, setDestination] = useState(null)
   const [getOrigin, setGetOrigin] = useState(null)
   const [GetDestination, setGetDestination] = useState(null)

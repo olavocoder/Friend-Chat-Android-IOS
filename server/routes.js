@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
-const stripe = require('stripe')("sk_test_51O1jJCDlIepAe2MgoV5s0MOyPLSX4ikyQtpNwUgmLvZbGckhO6acJ7NWrtx3KdV1WsPGr9FMww7k80FKXCqeLpHz00DxjGTkzl")
+import {STRIPE_API_KEY} from "@env"
+const stripe = require('stripe')(STRIPE_API_KEY)
 
 //Autorizar receber o body para requisições post
 app.use(express.json());
