@@ -1,1 +1,1 @@
-Pequeno projeto para delivery em react native usando sistema de mapas, rotas, pagamento, cadastro e login.
+Projeto de uma rede social em que consiste de chats para fazer amizades.

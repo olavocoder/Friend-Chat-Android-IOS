@@ -9,6 +9,7 @@ import {
   Button,
   HStack,
   Text,
+  Avatar,
   NativeBaseProvider
 } from 'native-base'
 import style from './style'
@@ -53,7 +54,11 @@ export default function Login({ navigation }) {
               <FormControl.Label>Password</FormControl.Label>
               <Input type="password" />
             </FormControl>
-            <Button mt="2" colorScheme="indigo">
+            <Button
+              mt="2"
+              colorScheme="indigo"
+              onPress={() => navigation.navigate('Avatar')}
+            >
               Sign in
             </Button>
             <HStack mt="6" justifyContent="center">
