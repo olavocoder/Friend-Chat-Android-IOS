@@ -79,3 +79,12 @@ export default function SignUp({ navigation }) {
     </NativeBaseProvider>
   )
 }
+
+function FormField({ type, name }) {
+  return (
+    <FormControl>
+      <FormControl.Label>{name}</FormControl.Label>
+      <Input type={type} />
+    </FormControl>
+  )
+}

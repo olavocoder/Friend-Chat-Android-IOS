@@ -11,6 +11,7 @@ import VentScreen from './components/VentScreen'
 import Header from './components/Header'
 import Login from './components/Login'
 import SignUp from './components/SignUp'
+import AvatarView from './components/AvatarView'
 
 export default function App() {
   const Stack = createStackNavigator()
@@ -29,6 +30,7 @@ export default function App() {
           <Stack.Navigator>
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen name="Avatar" component={AvatarView} />
             <Stack.Screen
               name="ChatList"
               component={ChatListScreen}
