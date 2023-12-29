@@ -1,16 +1,22 @@
-import React from "react";
-import { UseBackgroundQueryResult } from "@apollo/client";
-import SendPostApi from "../../services/SendPostApi";
-import { useState } from "react";
-import { TextArea, Button, Text } from "native-base";
-import { NativeBaseProvider } from "native-base";
+import React from 'react'
+import { UseBackgroundQueryResult } from '@apollo/client'
+import SendPostApi from '../../services/SendPostApi'
+import { useState } from 'react'
+import { TextArea, Button, Text } from 'native-base'
+import { NativeBaseProvider } from 'native-base'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const VentScreen = ({ navigation }) => {
-  const [comment, setComment] = useState();
+  const [comment, setComment] = useState()
 
   async function SendVent() {
-    const response = await SendPostApi(comment);
-    if (response) navigation.navigate("ChatList", { change: true });
+    const dataLogin = await AsyncStorage.getItem('LoginData')
+    if (dataLogin !== null) {
+      const dataExtract = JSON.parse(dataLogin)
+      const { nickName } = dataExtract[0]
+      const response = await SendPostApi(comment, nickName)
+      if (response) navigation.navigate('ChatList', { change: true })
+    }
   }
 
   return (
@@ -18,12 +24,12 @@ const VentScreen = ({ navigation }) => {
       <TextArea
         placeholder="Digite aqui seu desabafo ..."
         onChange={(e) => {
-          setComment(e.nativeEvent.text);
+          setComment(e.nativeEvent.text)
         }}
       />
       <Button onPress={SendVent}>Enviar Desabafo</Button>
     </NativeBaseProvider>
-  );
-};
+  )
+}
 
-export default VentScreen;
+export default VentScreen

@@ -5,27 +5,42 @@ import {
   VStack,
   FormControl,
   Input,
-  Link,
   Button,
-  HStack,
-  Text,
   NativeBaseProvider
 } from 'native-base'
-import style from './style'
-import { useState } from 'react'
-import LoginApi from '../../services/LoginApi'
-import SignUpApi from '../../services/SignUpApi'
+import { useState, useEffect } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function SignUp({ navigation }) {
-  async function VerifySignUp() {
-    const response = await LoginApi(login)
-    if (response?.allAuthor?.length == 0 && senha == senhaClone) {
-      SignUpApi(login, senha)
-      setAproved(true)
-      navigation.navigate('Inicio')
-    } else {
-      setAproved(false)
+  const [nickName, setNickName] = useState('')
+  const [email, setEmail] = useState('')
+  const [pass, setPass] = useState('')
+  const [passConfirm, setPassConfirm] = useState('not')
+  const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+  async function SendSignUp() {
+    if (
+      VerifyFields(nickName.length >= 6) &&
+      VerifyFields(regexEmail.test(email)) &&
+      VerifyFields(pass == passConfirm)
+    ) {
+      const data = {
+        name: nickName,
+        email: email,
+        pass: pass
+      }
+      try {
+        await AsyncStorage.setItem('SignUpData', JSON.stringify(data))
+        navigation.navigate('Avatar')
+      } catch (e) {
+        console.error('os dados nao foi salvo', e)
+      }
     }
+  }
+
+  function VerifyFields(condition) {
+    if (condition) return true
+    else return false
   }
 
   return (
@@ -54,23 +69,26 @@ export default function SignUp({ navigation }) {
             Sign up to continue!
           </Heading>
           <VStack space={3} mt="5">
-            <FormControl>
-              <FormControl.Label>Email</FormControl.Label>
-              <Input />
-            </FormControl>
-            <FormControl>
-              <FormControl.Label>Password</FormControl.Label>
-              <Input type="password" />
-            </FormControl>
-            <FormControl>
-              <FormControl.Label>Confirm Password</FormControl.Label>
-              <Input type="password" />
-            </FormControl>
-            <Button
-              mt="2"
-              colorScheme="indigo"
-              onPress={() => navigation.navigate('Login')}
-            >
+            <FormField
+              name="Nickname"
+              setValues={setNickName}
+              msg="Numero minimo de 6 caracters"
+              validation={() => VerifyFields(nickName.length >= 6)}
+            />
+            <FormField
+              name="Email"
+              setValues={setEmail}
+              validation={() => VerifyFields(regexEmail.test(email))}
+            />
+            <FormField name="Password" type="password" setValues={setPass} />
+            <FormField
+              name="Confirm Password"
+              type="password"
+              setValues={setPassConfirm}
+              validation={() => VerifyFields(pass == passConfirm)}
+              msg="Numero minimo de 6 caracters"
+            />
+            <Button mt="2" colorScheme="indigo" onPress={SendSignUp}>
               Sign up
             </Button>
           </VStack>
@@ -80,11 +98,31 @@ export default function SignUp({ navigation }) {
   )
 }
 
-function FormField({ type, name }) {
+function FormField({
+  type = '',
+  name,
+  setValues,
+  msg,
+  validation = () => true
+}) {
   return (
-    <FormControl>
+    <FormControl isRequired>
       <FormControl.Label>{name}</FormControl.Label>
-      <Input type={type} />
+      <Input
+        type={type}
+        onChange={(e) => {
+          setValues(e.nativeEvent.text)
+        }}
+      />
+      {!validation() && (
+        <FormControl.HelperText
+          _text={{
+            fontSize: 'xs'
+          }}
+        >
+          {msg}
+        </FormControl.HelperText>
+      )}
     </FormControl>
   )
 }

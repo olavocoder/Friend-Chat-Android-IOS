@@ -6,8 +6,6 @@ import { NativeBaseProvider, Box } from 'native-base'
 import { TouchableOpacity, RefreshControl } from 'react-native-gesture-handler'
 
 const ChatListScreen = ({ navigation, route }) => {
-  const { user } = route.params
-  console.log(user)
   const [allPosts, setAllPosts] = useState(null)
   const [refreshing, setRefreshing] = useState()
 
@@ -22,12 +20,6 @@ const ChatListScreen = ({ navigation, route }) => {
     CallPostApi()
   }, [])
 
-  const data = [
-    { id: '1', title: 'Chat 1' },
-    { id: '2', title: 'Chat 2' }
-    // ... add more chats
-  ]
-
   const onRefresh = async () => {
     setRefreshing(true)
     setAllPosts([])
@@ -38,14 +30,14 @@ const ChatListScreen = ({ navigation, route }) => {
     <TouchableOpacity
       onPress={() => navigation.navigate('Chat', { chatId: item['body'] })}
     >
-      {item?.author?.image?.asset?.url && (
+      {item?.author?.defaultImage && (
         <Avatar
           bg="amber.400"
-          source={{ uri: item.author.image.asset.url }}
+          source={{ uri: item.author.defaultImage }}
           size="xl"
         />
       )}
-      <Text>{item?.author?.name}</Text>
+      <Text>{item?.author?.nickName}</Text>
       <Text>{item?.body}</Text>
     </TouchableOpacity>
   )

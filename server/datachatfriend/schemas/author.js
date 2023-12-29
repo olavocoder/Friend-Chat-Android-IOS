@@ -6,8 +6,18 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'name',
-      title: 'Name',
+      name: 'nickName',
+      title: 'NickName',
+      type: 'string',
+    }),
+    defineField({
+      name: 'email',
+      title: 'Email',
+      type: 'string',
+    }),
+    defineField({
+      name: 'pass',
+      title: 'Password',
       type: 'string',
     }),
     defineField({
@@ -20,8 +30,13 @@ export default defineType({
       },
     }),
     defineField({
-      name: 'image',
-      title: 'Image',
+      name: 'defaultImage',
+      title: 'DefaultImage',
+      type: 'string',
+    }),
+    defineField({
+      name: 'customImage',
+      title: 'Custom Image',
       type: 'image',
       options: {
         hotspot: true,
@@ -35,8 +50,8 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: 'name',
-      media: 'image',
+      title: 'nickName',
+      media: 'customImage',
     },
   },
 })
