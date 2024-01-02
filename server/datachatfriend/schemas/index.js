@@ -4,5 +4,6 @@ import post from './post'
 import author from './author'
 import configs from './configs'
 import comments from './fields/comments'
+import chat from './fields/chat'
 
-export const schemaTypes = [post, author, category, blockContent, configs, comments]
+export const schemaTypes = [post, author, category, blockContent, configs, comments, chat]

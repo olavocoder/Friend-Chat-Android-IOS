@@ -47,6 +47,12 @@ export default defineType({
       title: 'Bio',
       type: 'text',
     }),
+    defineField({
+      name: 'authorsChat',
+      title: 'AuthorsChat',
+      type: 'array',
+      of: [{type: 'chat'}],
+    }),
   ],
   preview: {
     select: {
