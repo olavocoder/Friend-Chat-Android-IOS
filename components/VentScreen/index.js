@@ -2,7 +2,7 @@ import React from 'react'
 import { UseBackgroundQueryResult } from '@apollo/client'
 import SendPostApi from '../../services/SendPostApi'
 import { useState } from 'react'
-import { TextArea, Button, Text } from 'native-base'
+import { TextArea, Button, Text, FlatList } from 'native-base'
 import { NativeBaseProvider } from 'native-base'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -13,8 +13,8 @@ const VentScreen = ({ navigation }) => {
     const dataLogin = await AsyncStorage.getItem('LoginData')
     if (dataLogin !== null) {
       const dataExtract = JSON.parse(dataLogin)
-      const { nickName } = dataExtract[0]
-      const response = await SendPostApi(comment, nickName)
+      const { nickName, _id } = dataExtract[0]
+      const response = await SendPostApi(comment, nickName, _id)
       if (response) navigation.navigate('ChatList', { change: true })
     }
   }

@@ -4,6 +4,8 @@ import PostApi from '../../services/PostsApi'
 import { useEffect, useState } from 'react'
 import { NativeBaseProvider, Box } from 'native-base'
 import { TouchableOpacity, RefreshControl } from 'react-native-gesture-handler'
+import ListScroll from '../ListScroll'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const ChatListScreen = ({ navigation, route }) => {
   const [allPosts, setAllPosts] = useState(null)
@@ -11,7 +13,12 @@ const ChatListScreen = ({ navigation, route }) => {
 
   async function CallPostApi() {
     const getPosts = await PostApi()
-    console.log(getPosts)
+    if (getPosts.allPost) {
+      getPosts.allPost = getPosts.allPost.map((item) => ({
+        ...item,
+        navigation: navigation
+      }))
+    }
     setAllPosts(getPosts.allPost)
     setRefreshing(false)
   }
@@ -26,22 +33,6 @@ const ChatListScreen = ({ navigation, route }) => {
     await CallPostApi()
   }
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('Chat', { chatId: item['body'] })}
-    >
-      {item?.author?.defaultImage && (
-        <Avatar
-          bg="amber.400"
-          source={{ uri: item.author.defaultImage }}
-          size="xl"
-        />
-      )}
-      <Text>{item?.author?.nickName}</Text>
-      <Text>{item?.body}</Text>
-    </TouchableOpacity>
-  )
-
   return (
     <NativeBaseProvider>
       {allPosts && (
@@ -50,7 +41,7 @@ const ChatListScreen = ({ navigation, route }) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           data={allPosts}
-          renderItem={renderItem}
+          renderItem={ListScroll}
         />
       )}
       <Button onPress={() => navigation.navigate('VentSend')}>Desabafar</Button>

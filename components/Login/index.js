@@ -26,13 +26,11 @@ export default function Login({ navigation }) {
     try {
       if (userName && pass) {
         const response = await LoginApi(userName, pass)
-        console.log(response)
         await AsyncStorage.setItem(
           'LoginData',
           JSON.stringify(response?.allAuthor)
         )
         navigation.navigate('ChatList')
-        console.log(response)
       }
     } catch (e) {
       console.error('error ao tentar logar na pagina', e)

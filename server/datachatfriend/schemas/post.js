@@ -49,6 +49,12 @@ export default defineType({
       title: 'Body',
       type: 'text',
     }),
+    defineField({
+      name: 'comments',
+      title: 'Comments',
+      type: 'array',
+      of: [{type: 'comments'}],
+    }),
   ],
 
   preview: {

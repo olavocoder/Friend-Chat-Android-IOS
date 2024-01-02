@@ -9,9 +9,17 @@ const PostApi = async (user, password) => {
         _id
         body
         author {
+          _id
           nickName
           defaultImage
           bio
+        }
+        comments {
+          text
+          author {
+            nickName
+            defaultImage
+          }
         }
       }
     }

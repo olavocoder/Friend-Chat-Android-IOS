@@ -15,6 +15,7 @@ const LoginApi = async (user, password) => {
   const queryUser = gql`
     query getUser {
       allAuthor${getPassNumber(user, password)} {
+        _id
         nickName
         defaultImage
         bio
