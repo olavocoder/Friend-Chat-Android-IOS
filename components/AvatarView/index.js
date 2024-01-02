@@ -3,17 +3,15 @@ import {
   Box,
   Heading,
   VStack,
-  FormControl,
-  Input,
-  Link,
   Button,
   HStack,
-  Text,
   NativeBaseProvider,
   Avatar
 } from 'native-base'
 import GetAvatarAPi from '../../services/GetAvatarApi'
 import { useEffect, useState } from 'react'
+import { TouchableOpacity } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function AvatarView({ navigation }) {
   const [genderName, setGenderName] = useState(false)
@@ -40,21 +38,35 @@ export default function AvatarView({ navigation }) {
             </Button>
             <Button onPress={() => setGenderName(false)}>Female</Button>
           </HStack>
-          {genderName == true && <RowAvatar gender="male" />}
-          {genderName == false && <RowAvatar gender="female" />}
+          {genderName == true && (
+            <RowAvatar gender="male" navigation={navigation} />
+          )}
+          {genderName == false && (
+            <RowAvatar gender="female" navigation={navigation} />
+          )}
         </Box>
       </Center>
     </NativeBaseProvider>
   )
 }
 
-function ColumnAvatar({ init, end, gender }) {
+function ColumnAvatar({ init, end, gender, navigation }) {
   const [configs, setConfigs] = useState(null)
+
   async function CallAvatarApi() {
     const getAvatar = await GetAvatarAPi()
     gender == 'female'
       ? setConfigs(getAvatar?.avatarsFemale)
       : setConfigs(getAvatar?.avatarsMale)
+  }
+
+  async function NextView(avatarLink) {
+    try {
+      await AsyncStorage.setItem('avatarLink', avatarLink)
+      navigation.navigate('Perfil')
+    } catch (e) {
+      console.error('os dados nao foi salvo', e)
+    }
   }
 
   useEffect(() => {
@@ -66,12 +78,16 @@ function ColumnAvatar({ init, end, gender }) {
         configs?.map((item, index) => {
           if (index >= init && index <= end) {
             return (
-              <Avatar
+              <TouchableOpacity
                 key={index}
-                bg="amber.400"
-                source={{ uri: item?.asset?.url }}
-                size="xl"
-              />
+                onPress={() => NextView(item?.asset?.url)}
+              >
+                <Avatar
+                  bg="amber.400"
+                  source={{ uri: item?.asset?.url }}
+                  size="xl"
+                />
+              </TouchableOpacity>
             )
           }
         })}
@@ -79,13 +95,13 @@ function ColumnAvatar({ init, end, gender }) {
   )
 }
 
-function RowAvatar({ gender }) {
+function RowAvatar({ gender, navigation }) {
   return (
     <VStack space={3}>
-      <ColumnAvatar init={0} end={2} gender={gender} />
-      <ColumnAvatar init={3} end={5} gender={gender} />
-      <ColumnAvatar init={6} end={8} gender={gender} />
-      <ColumnAvatar init={9} end={11} gender={gender} />
+      <ColumnAvatar init={0} end={2} gender={gender} navigation={navigation} />
+      <ColumnAvatar init={3} end={5} gender={gender} navigation={navigation} />
+      <ColumnAvatar init={6} end={8} gender={gender} navigation={navigation} />
+      <ColumnAvatar init={9} end={11} gender={gender} navigation={navigation} />
     </VStack>
   )
 }

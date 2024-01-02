@@ -19,6 +19,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { GOOGLE_API_OAUTH } from '@env'
 
 export default function Login({ navigation }) {
+  const [userName, setUserName] = useState(null)
+  const [pass, setPass] = useState()
+
+  async function GetInfosLogin() {
+    try {
+      if (userName && pass) {
+        const response = await LoginApi(userName, pass)
+        await AsyncStorage.setItem(
+          'LoginData',
+          JSON.stringify(response?.allAuthor)
+        )
+        navigation.navigate('ChatList')
+      }
+    } catch (e) {
+      console.error('error ao tentar logar na pagina', e)
+    }
+  }
+
   return (
     <NativeBaseProvider>
       <Center w="100%">
@@ -48,17 +66,16 @@ export default function Login({ navigation }) {
           <VStack space={3} mt="5">
             <FormControl>
               <FormControl.Label>Email ID</FormControl.Label>
-              <Input />
+              <Input onChange={(e) => setUserName(e.nativeEvent.text)} />
             </FormControl>
             <FormControl>
               <FormControl.Label>Password</FormControl.Label>
-              <Input type="password" />
+              <Input
+                type="password"
+                onChange={(e) => setPass(e.nativeEvent.text)}
+              />
             </FormControl>
-            <Button
-              mt="2"
-              colorScheme="indigo"
-              onPress={() => navigation.navigate('Avatar')}
-            >
+            <Button mt="2" colorScheme="indigo" onPress={GetInfosLogin}>
               Sign in
             </Button>
             <HStack mt="6" justifyContent="center">

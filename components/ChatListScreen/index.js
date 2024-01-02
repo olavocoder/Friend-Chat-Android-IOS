@@ -4,16 +4,21 @@ import PostApi from '../../services/PostsApi'
 import { useEffect, useState } from 'react'
 import { NativeBaseProvider, Box } from 'native-base'
 import { TouchableOpacity, RefreshControl } from 'react-native-gesture-handler'
+import ListScroll from '../ListScroll'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const ChatListScreen = ({ navigation, route }) => {
-  const { user } = route.params
-  console.log(user)
   const [allPosts, setAllPosts] = useState(null)
   const [refreshing, setRefreshing] = useState()
 
   async function CallPostApi() {
     const getPosts = await PostApi()
-    console.log(getPosts)
+    if (getPosts.allPost) {
+      getPosts.allPost = getPosts.allPost.map((item) => ({
+        ...item,
+        navigation: navigation
+      }))
+    }
     setAllPosts(getPosts.allPost)
     setRefreshing(false)
   }
@@ -22,33 +27,11 @@ const ChatListScreen = ({ navigation, route }) => {
     CallPostApi()
   }, [])
 
-  const data = [
-    { id: '1', title: 'Chat 1' },
-    { id: '2', title: 'Chat 2' }
-    // ... add more chats
-  ]
-
   const onRefresh = async () => {
     setRefreshing(true)
     setAllPosts([])
     await CallPostApi()
   }
-
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('Chat', { chatId: item['body'] })}
-    >
-      {item?.author?.image?.asset?.url && (
-        <Avatar
-          bg="amber.400"
-          source={{ uri: item.author.image.asset.url }}
-          size="xl"
-        />
-      )}
-      <Text>{item?.author?.name}</Text>
-      <Text>{item?.body}</Text>
-    </TouchableOpacity>
-  )
 
   return (
     <NativeBaseProvider>
@@ -58,7 +41,7 @@ const ChatListScreen = ({ navigation, route }) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           data={allPosts}
-          renderItem={renderItem}
+          renderItem={ListScroll}
         />
       )}
       <Button onPress={() => navigation.navigate('VentSend')}>Desabafar</Button>
