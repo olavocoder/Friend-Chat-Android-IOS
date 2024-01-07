@@ -1,7 +1,13 @@
 import { clientSanity } from './api'
 
 // Mutation create para criar usuario dentro do banco do SanityIO
-const SendCommentApi = async (postId, authorId, commentText, key, index) => {
+const SendConversationApi = async (
+  postId,
+  authorId,
+  commentText,
+  key,
+  index
+) => {
   const commentObj = {
     _key: key,
     text: commentText,
@@ -23,4 +29,4 @@ const SendCommentApi = async (postId, authorId, commentText, key, index) => {
   }
 }
 
-export default SendCommentApi
+export default SendConversationApi

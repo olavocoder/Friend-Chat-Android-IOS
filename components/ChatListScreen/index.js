@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { NativeBaseProvider, Box } from 'native-base'
 import { TouchableOpacity, RefreshControl } from 'react-native-gesture-handler'
 import ListScroll from '../ListScroll'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import mapNavigation from '../../hooks/mapNavigation'
 
 const ChatListScreen = ({ navigation, route }) => {
   const [allPosts, setAllPosts] = useState(null)
@@ -14,10 +14,12 @@ const ChatListScreen = ({ navigation, route }) => {
   async function CallPostApi() {
     const getPosts = await PostApi()
     if (getPosts.allPost) {
-      getPosts.allPost = getPosts.allPost.map((item) => ({
-        ...item,
-        navigation: navigation
-      }))
+      getPosts.allPost = mapNavigation(
+        getPosts.allPost,
+        navigation,
+        'Conversation',
+        'Chat'
+      )
     }
     setAllPosts(getPosts.allPost)
     setRefreshing(false)

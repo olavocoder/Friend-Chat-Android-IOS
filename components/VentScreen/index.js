@@ -9,12 +9,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 const VentScreen = ({ navigation }) => {
   const [comment, setComment] = useState()
 
+  function GenerateKey(nickName) {
+    const dataActual = new Date()
+    return `cmt${nickName + dataActual}`
+  }
+
   async function SendVent() {
     const dataLogin = await AsyncStorage.getItem('LoginData')
     if (dataLogin !== null) {
       const dataExtract = JSON.parse(dataLogin)
       const { nickName, _id } = dataExtract[0]
-      const response = await SendPostApi(comment, nickName, _id)
+      const key = GenerateKey(nickName)
+      const response = await SendPostApi(comment, nickName, _id, key)
       if (response) navigation.navigate('ChatList', { change: true })
     }
   }

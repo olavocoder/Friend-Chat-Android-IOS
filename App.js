@@ -12,7 +12,8 @@ import Header from './components/Header'
 import Login from './components/Login'
 import SignUp from './components/SignUp'
 import AvatarView from './components/AvatarView'
-
+import ConversationScreen from './components/ConversationScreen'
+import ConversationListScreen from './components/ConversationListScreen'
 export default function App() {
   const Stack = createStackNavigator()
 
@@ -39,6 +40,11 @@ export default function App() {
             <Stack.Screen name="Chat" component={ChatScreen} />
             <Stack.Screen name="VentSend" component={VentScreen} />
             <Stack.Screen name="Perfil" component={Perfil} />
+            <Stack.Screen name="Conversation" component={ConversationScreen} />
+            <Stack.Screen
+              name="ConversationList"
+              component={ConversationListScreen}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </ApolloProvider>

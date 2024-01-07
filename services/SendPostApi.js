@@ -1,7 +1,7 @@
 import { clientSanity } from './api'
 
 // Mutation create para criar usuario dentro do banco do SanityIO
-const SendPostApi = async (body = '', nickName, id) => {
+const SendPostApi = async (body = '', nickName, id, key) => {
   const newPost = {
     _type: 'post',
     title: nickName,
@@ -9,7 +9,17 @@ const SendPostApi = async (body = '', nickName, id) => {
     author: {
       _ref: id,
       _type: 'reference'
-    }
+    },
+    comments: [
+      {
+        _key: key,
+        text: body,
+        author: {
+          _ref: id,
+          _type: 'reference'
+        }
+      }
+    ]
   }
 
   try {
