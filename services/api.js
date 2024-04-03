@@ -35,10 +35,3 @@ export const GeneralAPI = axios.create({
     'Content-Type': 'application/json'
   }
 })
-
-/* 
-curl 'https://ypsoxphg.api.sanity.io/v2021-06-07/data/mutate/production' \
-    -H 'Authorization: Bearer skFyoccwvKktOiaH6vEm0QHlvASq1jAcQdkiUkOcRz5vE6iHkkcFiYA84j0F8czDd4uElq5z7DdQbivkAnENsZi0oPG7GxFEUoNrAJQX01ZZdHnUMPKBYmMgXW2oTSzbVU81k9OXf9J7DYmREyTM4vrtuuQZHUXfrsQV6G1PBqpGzXInQPnZ' \
-    -H 'Content-Type: application/json' \
-    --data-binary '{"mutations":[{"create":{"_type": "post", "title": "nickName", "body": "body"}}]}'
-*/
